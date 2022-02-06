@@ -2,7 +2,7 @@ const express = require('express');
 var morgan  = require('morgan')
 
 const app = express();
-const PORT = 8080;
+const PORT = 80;
 const HOST = "localhost";
 
 app.get('/', (req, res) => {
