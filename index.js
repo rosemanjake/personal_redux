@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 8080;
+const PORT = 8080;
 const HOST = "http://localhost:";
 
 app.get('/', (req, res) => {
