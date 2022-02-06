@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const PORT = 8080;
-const HOST = "http://localhost:";
+const HOST = "localhost";
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
