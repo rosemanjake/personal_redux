@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/rosemanjake/personal_redux/issues"
   },
-  "homepage": "https://github.com/rosemanjake/personal_redux#readme"
+  "homepage": "https://github.com/rosemanjake/personal_redux#readme",
+  "dependencies": {
+    "morgan": "^1.10.0"
+  }
 }
