@@ -1,11 +1,13 @@
-const express = require('express')
-const app = express()
-const port = 80
+const express = require('express');
+const app = express();
+const port = 8080;
+const HOST = "http://localhost:";
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.listen(port, function () {
-    console.log('Express started on http://localhost:' + port + '; press Ctrl-C to terminate.');
-});
+app.listen(PORT, HOST, function(err) {
+    if (err) return console.log(err);
+    console.log("Listening at http://%s:%s", HOST, PORT);
+  });
