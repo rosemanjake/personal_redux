@@ -1,3 +1,5 @@
+// ssh -i C:\Users\rosem\Desktop\PEM_FILES\personalwebsiteEC2.pem ubuntu@18.216.155.21
+
 const express = require('express');
 const morgan  = require('morgan');
 const http = require('http');
@@ -12,7 +14,9 @@ app.get('/', (req, res) => {
 
 app.use(morgan('combined'))
 
-app.listen(PORT, HOST, function(err) {
+app.listen(PORT)
+
+/*app.listen(PORT, HOST, function(err) {
     if (err) return console.log(err);
     console.log("Listening at http://%s:%s", HOST, PORT);
   });/*
