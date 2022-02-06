@@ -12,14 +12,12 @@ app.get('/', (req, res) => {
 
 app.use(morgan('combined'))
 
-/*app.listen(PORT, HOST, function(err) {
+app.listen(PORT, HOST, function(err) {
     if (err) return console.log(err);
     console.log("Listening at http://%s:%s", HOST, PORT);
-  });*/
+  });/*
 
 http.createServer(function(req, res){
-
-res.writeHead( 200, { "content-Type" : 'text/plain' } )
-res.end('Hello world!!');
-
-}).listen(PORT);
+    res.writeHead( 200, { "content-Type" : 'text/plain' } )
+    res.end('Hello world!!');
+}).listen(PORT);*/
