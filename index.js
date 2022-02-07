@@ -15,19 +15,19 @@ const app = express();
 app.get('/', (req, res) => {
     //res.status(200).send('Hello, world!').end();
     res.writeHead(200, { 'content-type': 'text/html' })
-    fs.createReadStream('./www/home.html').pipe(res)
+    fs.createReadStream('.\\www\\home.html').pipe(res)
 });
 
 app.get('/main.js', (req, res) => {
     //res.status(200).send('Hello, world!').end();
     res.writeHead(200, { 'content-type': 'text/javascript' })
-    fs.createReadStream('./client/main.js').pipe(res)
+    fs.createReadStream('.\\client\\main.js').pipe(res)
 });
 
 app.get('/main.css', (req, res) => {
     //res.status(200).send('Hello, world!').end();
     res.writeHead(200, { 'content-type': 'text/css' })
-    fs.createReadStream('./www/main.css').pipe(res)
+    fs.createReadStream('.\\www\\main.css').pipe(res)
 });
 
 // Start the server
