@@ -1,19 +1,41 @@
+// View package version
+// npm view <package-name> version
+// Deploy app
+// gcloud app deploy
+
 'use strict';
 
 // [START gae_node_request_example]
 const express = require('express');
+const fs = require('fs')
+const parser = require('./server/parser')
 
 const app = express();
 
 app.get('/', (req, res) => {
-  res.status(200).send('Hello, world!').end();
+    //res.status(200).send('Hello, world!').end();
+    res.writeHead(200, { 'content-type': 'text/html' })
+    fs.createReadStream('./www/home.html').pipe(res)
+});
+
+app.get('/main.js', (req, res) => {
+    //res.status(200).send('Hello, world!').end();
+    res.writeHead(200, { 'content-type': 'text/javascript' })
+    fs.createReadStream('./client/main.js').pipe(res)
+});
+
+app.get('/main.css', (req, res) => {
+    //res.status(200).send('Hello, world!').end();
+    res.writeHead(200, { 'content-type': 'text/css' })
+    fs.createReadStream('./www/main.css').pipe(res)
 });
 
 // Start the server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log('Press Ctrl+C to quit.');
+    console.log(`App listening on port ${PORT}`);
+    console.log('Press Ctrl+C to quit.');
+    console.log(parser.parse())
 });
 // [END gae_node_request_example]
 
