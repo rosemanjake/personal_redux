@@ -1,9 +1,11 @@
+const { text } = require('express');
 const fs = require('fs');
 var path = require('path');
+const { title } = require('process');
 
 module.exports = {
     parse: function () {
-        let docpath = path.join(__dirname, '..', 'docs')
+        let docpath = path.join(__dirname, '..', 'sections')
         return new Corpus(docpath)
     },
     addDash: function(title){
@@ -25,21 +27,32 @@ class Corpus {
 
 class Section{
     constructor(files, title){
-        this.title = title
-        this.entries = getEntries(files)
+        this.title = title.replace(/^[\d]*_/gms, "")
+        this.entries = getEntries(files, this.title)
     }
 }
 
 class Entry{
-    constructor(text){
-        this.title = text.match(/(?<=^# )[^\r\n]*/)[0]
+    constructor(text, sectiontitle){
+        this.title = getTitle(text, sectiontitle)
         this.text = toHTML(text)
+    }
+}
+
+function getTitle(text, sectiontitle){
+    let headpat = text.match(/(?<=^# )[^\r\n]*/)
+    let match = text.match(headpat)
+    
+    if (match){
+        return match[0]
+    }
+    else{
+        return sectiontitle.toLowerCase()
     }
 }
 
 function getSections(docpath){
     let sections = []
-    //let dirs = fs.readdirSync(docPath, 'utf8');
     let dirs = fs.readdirSync(docpath).filter(function (file) {
         return fs.statSync(`${docpath}/${file}`).isDirectory();
     });
@@ -54,20 +67,54 @@ function getSections(docpath){
     return sections
 }
 
-function getEntries(files){
+function getEntries(files, sectiontitle){
     let entries = []
 
     for (let i = 0; i < files.length; i++){
         let currfile = files[i]
         let text = String(fs.readFileSync(currfile))
-        entries.push(new Entry(text))
+        entries.push(new Entry(text, sectiontitle))
     }
 
     return entries
 }
 
 function toHTML(text){
+    paras = text.split(/[\r\n]{2}/gms)
+    paras = paras.filter(para => !para.match(/^[\s]*$/gms))
+    paras = paras.map(para => formatPara(para))
+    text = paras.join("\n")
+
     return text
+}
+
+function formatPara(para){
+    let headpat = /^[#]{1,} /gms
+    let imgpat = /\!\[[^\]]*\]\([^\)]*\)/gms
+
+    // Return unchanged if we have inline HTML
+    if(para.match(/^</)){
+        return para
+    }
+    // If we have a MD header
+    else if (para.match(headpat)){
+        let dashes = para.match(/#*/gms)[0]
+        let level = dashes.length 
+
+        para = para.replace(headpat, `<h${level}>`)
+        para = `${para}</h${level}>`
+    }
+    // If we have a MD image
+    else if(para.match(imgpat)){
+        let caption = para.match(/(?<=\!\[)[^\]]*(?=\])/gms)[0]
+        let src = para.match(/(?<=\!\[[^\]]*\]\()[^\)]*(?=\))/gms)[0]
+        para = `<figure class="articlefig"><img src="images/${src}" class="articleimg"><figcaption class="articlecaption">${caption}</figcaption></figure>`  
+    }
+    // Wrap with <p> tags by default
+    else{
+        para = `<p>${para}</p>`
+    }
+    return para
 }
 
 function getMaps(sections){

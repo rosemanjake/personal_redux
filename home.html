@@ -1,0 +1,29 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Jake Roseman</title>
+    <script src="/js/main.js"></script>
+    <script src="/js/gallery.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@503&display=swap" rel="stylesheet">
+</head>
+
+<body onload="fetchSections(), init()">
+    <div class="maincontainer">
+        <div class="sidebar" id="sidebar">
+            <div class="maintitle">JAKE<br>ROSEMAN</div>
+            <div class="subtitle">SOFTWARE, WRITING, AND PHOTOGRAPHY</div>
+            <div id="menubar" class="menubar"></div>
+            <div id="socials" class="socials">
+                <a href="https://www.linkedin.com/in/jake-roseman/"><img class="socialicon" id="linkedin" src="svg/linkedin.svg" onmouseenter="highlightSVG('linkedin')" onmouseleave="removeHighlight('linkedin')"/></a>
+                <a href="https://www.instagram.com/roseman.jake/"><img class="socialicon" id="insta" src="svg/insta.svg" onmouseenter="highlightSVG('insta')" onmouseleave="removeHighlight('insta')"/></a>
+            </div>
+            <div id="copyright" class="copyright">© COPYRIGHT<BR>ALL RIGHTS RESERVED</div>
+        </div>
+        <div id="content" class="content"></div>
+    </div>
+</body>
+
+</html>
