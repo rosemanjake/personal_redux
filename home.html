@@ -4,7 +4,9 @@
     <title>Jake Roseman</title>
     <script src="/js/main.js"></script>
     <script src="/js/gallery.js"></script>
+    <script src="/js/carousel.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="/css/gallery.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@503&display=swap" rel="stylesheet">
@@ -14,11 +16,16 @@
     <div class="maincontainer">
         <div class="sidebar" id="sidebar">
             <div class="maintitle">JAKE<br>ROSEMAN</div>
-            <div class="subtitle">SOFTWARE, WRITING, AND PHOTOGRAPHY</div>
+            <div class="subtitle">
+                <span onclick="routeSection('Software')" class="subtitlelink">SOFTWARE</span>, 
+                <span onclick="routeSection('Writing')" class="subtitlelink">WRITING</span>, AND 
+                <span onclick="routeSection('Gallery')" class="subtitlelink">PHOTOGRAPHY</span>
+            </div>
             <div id="menubar" class="menubar"></div>
             <div id="socials" class="socials">
                 <a href="https://www.linkedin.com/in/jake-roseman/"><img class="socialicon" id="linkedin" src="svg/linkedin.svg" onmouseenter="highlightSVG('linkedin')" onmouseleave="removeHighlight('linkedin')"/></a>
                 <a href="https://www.instagram.com/roseman.jake/"><img class="socialicon" id="insta" src="svg/insta.svg" onmouseenter="highlightSVG('insta')" onmouseleave="removeHighlight('insta')"/></a>
+                <a href="https://github.com/rosemanjake/"><img class="socialicon" id="github" src="svg/github.svg" onmouseenter="highlightSVG('github')" onmouseleave="removeHighlight('github')"/></a>
             </div>
             <div id="copyright" class="copyright">© COPYRIGHT<BR>ALL RIGHTS RESERVED</div>
         </div>

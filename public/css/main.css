@@ -165,3 +165,8 @@ h2 {
     width:16px;
     padding:5px;
 }
+
+.subtitlelink:hover{
+    color: var(--BabyBlueEyes);
+    cursor: pointer;
+}

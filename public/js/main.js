@@ -1,6 +1,7 @@
 //const domain = 'https://jakeroseman.com/'
 const domain = 'http://localhost:8080/'
 let sectionmap
+let opencolumn = []
 
 function highlightSVG(id){
     let img = document.getElementById(id)
@@ -73,8 +74,17 @@ function makeArrow(section){
     return container
 }
 
-function routeSection(){
-    let section = this.innerText
+function routeSection(sec){
+    // I want it to be possible to call this function just by passing in a string
+    // But also with a button press
+    let section 
+    if(typeof sec == 'string'){
+        section = sec
+    }
+    else{
+        section = this.innerText // this = button
+    }
+    
 
     switch(section){
         case "Home":
@@ -111,21 +121,29 @@ function closeMenu(column, section){
 }
 
 async function fetchEntries(section){
+    // TODO(This looks weird, so I'm commenting it out for now)
+    // Close a menu that is already open
+    /*if (opencolumn.length > 0){
+        closeMenu(opencolumn[0], opencolumn[1])
+    }*/
+
     const req = new Request(`${domain}d?s=${section}`)
     fetch(req)
         .then(response => response.json())
         .then((data) => {
-            let currbutton = document.getElementById(`${section}_column`)
+            let currcolumn = document.getElementById(`${section}_column`)
             data.forEach((entry) => {
                 let currentry = document.createElement('div')
                 currentry.innerText = entry
                 currentry.className = "entrybutton"
                 currentry.onclick = fetchContent
                 currentry.id = currentry.innerText
-                currbutton.appendChild(currentry)
+                currcolumn.appendChild(currentry)
 
                 let arrow = document.getElementById(`${section}_arrow`)
                 arrow.src = "svg/uparrow.svg"
+
+                opencolumn = [currcolumn, section]
             })
         })
 }
@@ -147,6 +165,11 @@ async function fetchContent(urlentry){
         .then(response => response.json())
         .then((data) => {
             let contentbox = document.getElementById("content")
+            contentbox.className = "content"
+
+            let thumbs = document.getElementById("thumbs")
+            if(thumbs){thumbs.remove()}
+
             contentbox.innerHTML = data.text
             switch(entry){
                 case "home":
@@ -192,7 +215,11 @@ function init(){
     }
     // Go to home if we find nothing
     else{
-        fetchContent("Home")
+        fetchContent("home")
     }
     
+}
+
+function insertAfter(newNode, existingNode) {
+    existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
 }
