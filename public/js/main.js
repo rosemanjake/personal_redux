@@ -29,7 +29,7 @@ async function fetchSections(data = {}){
                 // Primary row with drop down
                 let menurow = document.createElement('div')
                 menurow.className ="menurow"
-                menurow.onclick = routeSection
+                menurow.addEventListener('click', routeSection)
                 menurow.id = `${section}_row`
                 menucolumn.appendChild(menurow)
 
@@ -85,7 +85,6 @@ function routeSection(sec){
         section = this.innerText // this = button
     }
     
-
     switch(section){
         case "Home":
             fetchContent("home")
@@ -106,6 +105,8 @@ function routeSection(sec){
             }
             break
     }
+
+    
 }
 
 function closeMenu(column, section){
@@ -136,7 +137,7 @@ async function fetchEntries(section){
                 let currentry = document.createElement('div')
                 currentry.innerText = entry
                 currentry.className = "entrybutton"
-                currentry.onclick = fetchContent
+                currentry.addEventListener('click', fetchContent)
                 currentry.id = currentry.innerText
                 currcolumn.appendChild(currentry)
 
@@ -182,6 +183,9 @@ async function fetchContent(urlentry){
                     window.history.pushState("object or string", "Title", `/r?e=${entry}`);
                     break
             }
+            reversehamburger()
+            smoothscroll()
+            carouselInit()
         })
 }
 
@@ -222,4 +226,55 @@ function init(){
 
 function insertAfter(newNode, existingNode) {
     existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
+}
+
+function hamburger(){
+    // Close menu if it is open
+    if(reversehamburger()){
+        return
+    }
+    
+
+    // Get sidebar, back it up, and remove it from the maincontainer
+    let sidebar = document.getElementById("sidebar")
+    let mobilesidebar = sidebar
+    sidebar.remove()
+
+    // Change the class name and append to body
+    mobilesidebar.className = "mobilesidebar"
+    document.body.appendChild(mobilesidebar);  
+}
+
+// Closes the menu
+// Returns true if there actually was a menu that it closed
+function reversehamburger(){
+    let sidebar = document.getElementsByClassName("mobilesidebar")[0]
+    if (!sidebar){
+        return false
+    }
+
+    // Create copy of mobile sidebar and restore original class
+    sidebar.className = "sidebar"
+    
+    // Remove mobile sidebar and restore original to maincontainer
+    sidebar.remove()
+    let container = document.getElementById("maincontainer")
+    container.insertBefore(sidebar, container.firstChild);
+
+    return true
+}
+
+function fastScroll(){
+    let currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+    if (currentScroll > 0) {
+         window.scrollTo (0);
+    }
+}
+
+function smoothscroll(){
+    let currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+    if (currentScroll > 0) {
+         window.requestAnimationFrame(smoothscroll);
+         window.scrollTo (0,currentScroll - (currentScroll/5));
+    }
 }

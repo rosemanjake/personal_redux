@@ -17,7 +17,7 @@
 .gallerycontent{
     width:75%;
     margin:auto;
-    margin-top:15px;
+    margin-top:40px;
     margin-bottom:10px;
     animation: fadeIn 2s;
     -webkit-animation: fadeIn 2s;
@@ -90,11 +90,11 @@
     width:100%;
     top:0;
     left:0;
-    animation: fadeIn75 2s;
-    -webkit-animation: fadeIn75 2s;
-    -moz-animation: fadeIn75 2s;
-    -o-animation: fadeIn75 2s;
-    -ms-animation: fadeIn75 2s;
+    animation: fadeIn75 1s;
+    -webkit-animation: fadeIn75 1s;
+    -moz-animation: fadeIn75 1s;
+    -o-animation: fadeIn75 1s;
+    -ms-animation: fadeIn75 1s;
     pointer-events: auto;
 }
 
@@ -185,21 +185,34 @@
 
 .carousel{
     max-width:100%;
+    max-height:800px;
     margin:auto;
     display:flex;
     align-items: center;
 }
 
-.carouselimg{
+.carouselfig, .carouselwportrait{
     max-width:100%;
-    max-height:100%;
-    display:block;
+    height:40vh;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+}
+
+.carouselwportrait{
+    height:60vh;
+}
+
+.carouselimg{
+    max-height:60vh;
+    max-width:100%;
 }
 
 .carousel_button{
     font-size:2em;
     font-style: bold;
     padding:10px;
+    display:block;
 }
 
 .carousel_button:hover{

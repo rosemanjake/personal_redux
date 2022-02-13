@@ -6,6 +6,18 @@
     --AirSuperiority: #82A0BC;
     --OffWhite:#f5f5f5;
     --LightGrey:#A9A9A9;
+
+    --pViolet:#CC99C9;
+    --pBlue:#9EC1CF;
+    --pGreen:#9EE09E;
+    --pYellow:#FDFD97;
+    --pOrange:#FEB144;
+    --pRed:#FF6663;
+
+    --Huge:2.5em;
+    --Large:1.5em;
+    --Big:1.25em;
+    --Small:.8em;
 }
 
 body{
@@ -16,19 +28,31 @@ body{
 }
 
 h1 {
-    color:var(--BlueJeans);
-    font-size: 1.5em
+    color:var(--YaleBlue);
+    font-size: var(--Large);
+    text-transform: uppercase;
+    margin-top:0;
+    font-weight: normal;
+    margin-bottom:20px;
 }
 
 h2 {
-    color:var(--BlueJeans);
-    font-size: 1.2em
+    color:var(--YaleBlue);
+    font-size: var(--Big);
+    font-weight: normal;
+}
+
+h3 {
+    color:var(--YaleBlue);
+    font-weight: normal;
+    font-size: var(--Big);
 }
 
 .maincontainer{
     display: flex;
     flex-direction: row;
-
+    background: var(--OffWhite);
+    min-height: 100%;
 }
 
 .menubar {
@@ -38,6 +62,9 @@ h2 {
     flex-direction: column;
     justify-content: center;
     margin:auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: var(--Big);
 }
 
 .menubutton {
@@ -51,7 +78,7 @@ h2 {
     margin-top:1em;
     margin-bottom:1em;
     margin-left:.5em;
-    font-size: .9em;
+    font-size: .8em;
 }
 
 .entrybutton:hover {
@@ -90,52 +117,73 @@ h2 {
 }
 
 .sidebar{
-    max-width:20%;
-    margin-left:20px;
+    max-width:18%;
+    background-color: white;
+    position:sticky;
+    top:0;
+    left:0;
+    height:100vh;
+    padding-left:35px;
+
+}
+
+.mobilesidebar{
+    width:30vh;
+    height:100vh;
+    background-color: white;
+    z-index: 9999999999999999;
+    position:fixed;
+    left:0;
+    top:0;
 }
 
 .maintitle{
-    font-size:2.5em;
+    font-size:var(--Huge);
     display:block;
     font-family: 'Raleway', sans-serif;
     color: #242526;
-    padding:15px;
-    margin-top: 15px;
     padding-left:0;
+    margin-top:40px;
 }
 
 .subtitle{
-    font-size:1em;
     display:block;
     font-family: 'Raleway', sans-serif;
     color: var(--LightGrey);
-    padding:15px;
     line-height: 150%;
-    padding-left:0;
+    margin-top:20px;
+    font-size: var(--Big);
+    padding-right:20px;
 }
 
 .content{
-    max-width:75%;
-    margin:auto;
+    max-width:40%;
     display:block;
-    margin-top:30px;
+    background: white;
+    margin-left:20px;
+    padding-left:40px;
+    padding-right:40px;
+    padding-top:100px;
+    padding-bottom: 150px;
 }
 
 .articlefig{
-    max-width:80%;
+    max-width:100%;
     display:block;
     margin:auto;
 }
 
 .articleimg{
-    max-width:100%;
+    max-width:80%;
+    max-height:60vh;
     display:block;
+    margin:auto;
 }
 
 .articlecaption{
     margin:auto;
     text-align: center;
-    font-size: .9em;
+    font-size: var(--Small);
     padding:10px;
 }
 
@@ -149,7 +197,11 @@ h2 {
 
 .copyright{
     font-size:.5em;
-    color:var(--LightGrey)
+    color:var(--LightGrey);
+    position:fixed;
+    bottom:10;
+    left:0;
+    margin-left:35px;
 }
 
 .socials{
@@ -169,4 +221,75 @@ h2 {
 .subtitlelink:hover{
     color: var(--BabyBlueEyes);
     cursor: pointer;
+}
+
+.twocolumn{
+    display:flex;
+    flex-direction: row;
+}
+
+.leftcolumn, .rightcolumn{
+    width:50%
+}
+
+.articlesubheading{
+    font-size: var(--Small);
+}
+
+.articletable, .articletablehead, .articletablebody{
+    margin:auto;
+    border: 0;
+    text-align:center;
+}
+
+th, td {
+    padding: 10px;
+}
+
+code{
+    font-size: 1.2em;
+}
+
+.equation{
+    display:block;
+    margin:auto;
+}
+
+.equationimg{
+    display:block;
+    margin:auto;
+    width:100%;
+    height:100%
+}
+
+.topbar{
+    display:none;
+    height:5vh;
+    flex-direction: row;
+    align-items:center;
+}
+
+.toptitle{
+    text-align:left;
+    width:100%;
+    padding:10px;
+    font-size:var(--Large);
+    display:block;
+    font-family: 'Raleway', sans-serif;
+    color: #242526;
+}
+
+.hamburger{
+    text-align:right;
+    width:10%;
+    padding:10px;
+    cursor:pointer;
+}
+
+a{
+    color:var(--YaleBlue)
+}
+
+a:hover{
+    color:var(--BlueJeans)
 }

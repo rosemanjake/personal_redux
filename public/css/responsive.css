@@ -1,0 +1,39 @@
+/* Big screen devices (889px and above) */
+@media only screen and (max-width: 1200px) {
+    .content, .gallerycontent {
+        width:95%;
+        max-width:95%;
+    }
+    .maintitle {
+        font-size:2em;
+    }
+    .subtitle{
+        display:none;
+    }
+    .sidebar{
+        display:none;
+    }
+    .topbar {
+        display: flex;
+    }
+    .content{
+        width:80%;
+        max-width:80%;
+    }
+    .twocolumn{
+        flex-direction: column;
+    }
+    .leftcolumn, .rightcolumn{
+        width: 100%;
+    }
+}
+
+/* Very big screen devices (1400px and above) */
+@media only screen and (min-width: 1600px){
+    .content{
+        width:40%;
+        max-width:40%;
+    }
+}
+
+

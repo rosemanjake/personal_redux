@@ -80,20 +80,84 @@ function getEntries(files, sectiontitle){
 }
 
 function toHTML(text){
+    // Replace ``` with pre tags
+    text = codeToHTML(text)
+    // Remove new lines from code snippets marked with <pre>, to prevent it breaking the splitter
+    premap = removeLines(/<pre.*?(?<=<\/pre>)/gms, text)
+    if (premap){
+        text = mapSwap(premap, text)
+    }
+    // Split into paras
     paras = text.split(/[\r\n]{2}/gms)
+    // Remove empty paras
     paras = paras.filter(para => !para.match(/^[\s]*$/gms))
+    // Format paras
     paras = paras.map(para => formatPara(para))
+    // Rejoin text
     text = paras.join("\n")
+    // Restore whitespace to snippets
+    if (premap){
+        premapinverse = inversemap(premap)
+        text = mapSwap(premapinverse, text)    
+    }
 
     return text
 }
 
+function codeToHTML(text){
+    let codeblocks = text.match(/[`]{3}.*?[`]{3}/gms)
+    if (!codeblocks){
+        return text
+    }
+
+    codeblocks.forEach((block) => {
+        let newblock = block.replace(/^[`]{3}/, "<pre class=\"prettyprint\">")
+        newblock = newblock.replace(/[`]{3}$/, "</pre>")
+        text = text.replace(block, newblock)
+    })
+
+    return text
+}
+
+// Flip keys and values in a Map
+function inversemap(map){
+    let inverse = new Map()
+    let keys = Array.from(map.keys())
+
+    keys.forEach((oldkey) => {
+        let oldv = map.get(oldkey)
+        inverse.set(oldv, oldkey)
+    })
+
+    return inverse
+}
+
+/* Wherever a match for the pattern is found in the given string,
+this function will reduce the number of new lines in the string to just one
+Returns a Map where key = original substring, value = substring with reduced spaces
+*/
+function removeLines(pattern, string){
+    let matches = string.match(pattern)
+    if (!matches){
+        return
+    }
+
+    let map = new Map()
+
+    matches.forEach((match) => {
+        map.set(match, match.replace(/[\r\n]{2,}/gms, "\n"))
+    })
+
+    return map
+}
+
+// Apply correct MD formatting to the given paragraph
 function formatPara(para){
     let headpat = /^[#]{1,} /gms
     let imgpat = /\!\[[^\]]*\]\([^\)]*\)/gms
 
     // Return unchanged if we have inline HTML
-    if(para.match(/^</)){
+    if(para.match(/^[\s]*</)){
         return para
     }
     // If we have a MD header
@@ -114,7 +178,36 @@ function formatPara(para){
     else{
         para = `<p>${para}</p>`
     }
+
+    para = para.replace(/`\b/gms, "<code>")
+    para = para.replace(/\b`/gms, "</code>")
+    para = linksToHTML(para)
+
     return para
+}
+
+// Converts Md links to HTML
+function linksToHTML(para){
+    const linkpat = /(?<!\!)\[[^\]]*\]\([^\)]*\)/gms
+    let links = para.match(linkpat)
+    if (!links){
+        return para
+    }
+
+    const targetpat = /(?<=\()[^\s]*/gms
+    const textpat = /(?<=\[)[^\]]*/gms
+    const targetcleanpat = /[\)]{1}[.,?!:;"'\/-_+=|]*(?=$)/gms // I want it to be possible to include parentheses in the link target, which can be important when linking to technical references. So for the the target I catch everything up to the next whitespace, necessity cleaning up a little afterwards.
+
+    linkmap = new Map()
+
+    for (let i = 0; i < links.length; i++){
+        let currlink = links[i]
+        let target = currlink.match(targetpat)[0].replace(targetcleanpat, "")
+        let text = currlink.match(textpat)[0]
+        linkmap.set(currlink, `<a href="${target}">${text}</a>`)
+    }
+
+    return mapSwap(linkmap, para)
 }
 
 function getMaps(sections){
@@ -137,3 +230,28 @@ function getMaps(sections){
     return [sectionmap, entrymap]
 }
 
+// Takes a map where key = original string and value = replacement. Replace all occurrences of the key in the string with the value.
+// In Node v15 it's possible to use replaceAll rather than my findSubstrings() hack. I'm running v14
+function mapSwap(map, string){
+    let keys = Array.from(map.keys())
+
+    keys.forEach((key) => {
+        let substringcount = findSubstrings(string, key).length
+        for (let i = 0; i< substringcount; i++){
+            string = string.replace(key, map.get(key))
+        }       
+    })
+
+    return string
+}
+
+// Returns array where of all occurrences of substring in string
+function findSubstrings(string, substring){
+    let substrings = [];
+    for (i = 0; i < string.length; ++i) {
+        if (string.substring(i, i + substring.length) == substring) {
+            substrings.push(i);
+        }
+    }
+    return substrings;
+}

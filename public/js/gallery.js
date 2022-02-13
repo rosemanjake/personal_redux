@@ -1,6 +1,7 @@
 let imgs
 
 function injectGallery(){
+    reversehamburger()
     window.history.pushState("object or string", "Title", "/gallery");
 
     // Fetch data and push to content div
@@ -29,23 +30,25 @@ function injectGallery(){
 
             contentbox.appendChild(thumbs)
         })
+        .then(smoothscroll())
     }
 
 //grey out background when displaying big image
 function greyOut(){
     let grey = document.createElement("div");
     grey.id = "grey"
-    grey.addEventListener('click', function(){
-        endGrey();
-     });
+    // It's necessary to add the click event listener with a callback from animationend.
+    grey.addEventListener('animationend', function(e){
+        e.currentTarget.addEventListener('click', function(){
+            endGrey();
+         });
+    }, {
+        capture: false,
+        once: true,
+        passive: false
+    });
     grey.className = "grey_active"
     document.body.appendChild(grey)
-}
-
-function addEnd(e){
-    e.currentTarget.addEventListener('click', function(){
-        endGrey();
-     });
 }
 
 //kill grey out
@@ -53,16 +56,14 @@ function endGrey(){
     let grey = document.getElementById("grey");
     let gallerycontainer = document.getElementById("gallerycontainer")
     gallerycontainer.remove();
-    grey.addEventListener('transitionend', kill, {
+    grey.addEventListener('transitionend', function(e){
+        e.currentTarget.remove();
+    }, {
         capture: false,
         once: true,
         passive: false
     });
     grey.className = "grey_inactive";//should fade out here instead
-}
-
-function kill(e) {
-    e.currentTarget.remove();
 }
 
 //Display big image

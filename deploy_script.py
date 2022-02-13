@@ -39,5 +39,5 @@ if __name__ == "__main__":
     for img in imgs:
         createThumbnail(img)
     
-    # Deploy to app fine
+    # Deploy to app engine
     deploy(currdir)

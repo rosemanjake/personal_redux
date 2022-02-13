@@ -1,22 +1,33 @@
 //Create a carousel when it is present in the content we are injecting
 function carouselInit(){
     //Get carousel
-    var carousel = document.getElementById("carousel");
+    let carousel = document.getElementById("carousel");
     //Back out if it ain't there
     if (carousel == null){
         return;
     }
     
-    //Kill all but first image
-    var carousel_imgs = document.getElementsByClassName("carouselimg")
-    for (var i = 0; i < carousel_imgs.length; i++){
+    //Kill all but first image, check if there is a portrait among them
+    let carousel_imgs = document.getElementsByClassName("carouselfig")
+    let containsportait
+    for (let i = 0; i < carousel_imgs.length; i++){
         if (i !== 0){
             carousel_imgs[i].style.display = "none";
+        }
+        let img = carousel_imgs[i].firstChild
+        if (img.height > img.width){
+            containsportait = true
+        } 
+    }
+
+    if (containsportait){
+        for (let i = 0; i < carousel_imgs.length; i++){
+            carousel_imgs[i].className = "carouselwportrait"
         }
     }
 
     //generate forward button
-    var forwardbutton = document.createElement("div")
+    let forwardbutton = document.createElement("div")
     forwardbutton.innerHTML = ">";
     forwardbutton.classList.add("carousel_forwardsbutton");
     forwardbutton.classList.add("carousel_button");
@@ -25,7 +36,7 @@ function carouselInit(){
     });
 
     //generate back button
-    var backbutton = document.createElement("div")
+    let backbutton = document.createElement("div")
     backbutton.innerHTML = "<";
     backbutton.classList.add("carousel_backbutton");
     backbutton.classList.add("carousel_button");
@@ -41,10 +52,9 @@ function carouselInit(){
 /*
 Example carousel syntax:
 <div class="carousel" id="carousel">
-    <img class="carouselimg" src="photo1.jpg">
-    <img class="carouselimg" src="photo2.jpg">
-    <img class="carouselimg" src="photo3.jpg">
-    <img class="carouselimg" src="photo4.jpg">
+    <figure class="carouselfig"><img class="carouselimg" src="images/headshot.jpg"><figurecaption class="articlecaption">hello</figurecaption></figure>
+    <figure class="carouselfig"><img class="carouselimg" src="images/photo1.jpg"><figurecaption class="articlecaption">hi</figurecaption></figure>
+    <figure class="carouselfig"><img class="carouselimg" src="images/caffeinequitter.jpg"><figurecaption class="articlecaption">gday</figurecaption></figure>
 </div>  
 */
 
@@ -52,19 +62,17 @@ Example carousel syntax:
 //Make this generic so we can use it for the carousel as well
 function changeCarouselImg(index, targetimg){   
     //define mainimg/localimgs based on whether we are in a carousel or not
-    var activeimg = getCarouselImg();
-    var imgsrcs = getCarouselImgs();
-    var imgobjs = document.getElementsByClassName("carouselimg")
+    let imgobjs = Array.from(document.getElementsByClassName("carouselfig"))
 
     //Do the cycling
-    var currimg = trimImgPath(activeimg)
-    var currindex = imgsrcs.indexOf(currimg)
-    var newindex = currindex + index
-    if(newindex >= imgsrcs.length){
+    let currimg = getCarouselImg();
+    let currindex = imgobjs.indexOf(currimg)
+    let newindex = currindex + index
+    if(newindex >= imgobjs.length){
         newindex = 0
     }
     else if(newindex < 0){
-        newindex = imgsrcs.length - 1
+        newindex = imgobjs.length - 1
     }
     
     //hide current active image and display new one
@@ -75,8 +83,8 @@ function changeCarouselImg(index, targetimg){
 
 //Returns the active image in the carousel
 function getCarouselImg(){
-    var carousel_imgs = document.getElementsByClassName("carouselimg")
-    for (var i = 0; i < carousel_imgs.length; i++){
+    let carousel_imgs = document.getElementsByClassName("carouselfig")
+    for (let i = 0; i < carousel_imgs.length; i++){
         if (carousel_imgs[i].style.display !== "none"){
             return carousel_imgs[i];
         }
@@ -85,12 +93,12 @@ function getCarouselImg(){
 
 //return list of img sources
 function getCarouselImgs(){
-    var carousel_imgs = document.getElementsByClassName("carouselimg")
+    let carousel_imgs = document.getElementsByClassName("carouselfig")
     //list of just the srcs
-    var imglist = []
+    let imglist = []
 
     //Add each src to the list and return it
-    for (var i = 0; i < carousel_imgs.length; i++){
+    for (let i = 0; i < carousel_imgs.length; i++){
         imglist.push(trimImgPath(carousel_imgs[i]))
     }
 
