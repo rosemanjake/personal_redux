@@ -1,37 +1,48 @@
 let imgs
 
-function injectGallery(){
+async function injectGallery(){
     reversehamburger()
     window.history.pushState("object or string", "Title", "/gallery");
 
-    // Fetch data and push to content div
+    let contentbox = document.getElementById("content")
+    contentbox.className = "gallerycontent"
+    contentbox.innerHTML = ""
+
     const req = new Request(`${domain}g`)
-    fetch(req)
-        .then(response => response.json())
-        .then((data) => {
-            let contentbox = document.getElementById("content")
-            contentbox.innerHTML = ""
-            contentbox.className = "gallerycontent"
+    let res = await fetch(req)
+    imgs = await res.json()
+    let thumbs = await loadThumbs(imgs)
 
-            let thumbs = document.createElement('div')
-            thumbs.id = 'thumbs'
-            thumbs.className = 'thumbs'
+    contentbox.appendChild(thumbs)
+    // Seems like the browser needs just a little bit of time to load everything
+    // If I don't set the time out, my fade in transition doesn't work with the class name change
+    await new Promise(r => setTimeout(r, 50)); 
+    thumbs.className = "thumbsloaded"
+    
+    fastScroll()
+}
 
-            imgs = data
-            Array.from(data).forEach((img) => {
-                let currimg = document.createElement('img')
-                currimg.className = "thumbnail"
-                currimg.src = img.replace("photos", "thumbnails")
-                currimg.addEventListener('click', function(){
-                    displayImage(this);
-                 });
-                thumbs.appendChild(currimg)         
-            })
+async function loadThumbs(imgs){
+    let thumbpaths = imgs.map((img) => img.replace("photos/", "thumbnails/"))
+    let imgobjs = await Promise.all(thumbpaths.map(loadImage))
+    let imgfrag = document.createDocumentFragment();
+    
+    imgobjs.forEach((currimg) => {
+        currimg.className = "thumbnail"
+        currimg.src = currimg.src.replace("photos", "thumbnails")
+        currimg.addEventListener('click', function(){
+            displayImage(this);
+        });
+        imgfrag.appendChild(currimg)
+    });
 
-            contentbox.appendChild(thumbs)
-        })
-        .then(smoothscroll())
-    }
+    let thumbs = document.createElement('div')
+    thumbs.id = 'thumbs'
+    thumbs.className = 'thumbs'
+    thumbs.appendChild(imgfrag)         
+
+    return thumbs
+}
 
 //grey out background when displaying big image
 function greyOut(){
@@ -66,30 +77,34 @@ function endGrey(){
     grey.className = "grey_inactive";//should fade out here instead
 }
 
+const loadImage = src =>
+new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+});
+
 //Display big image
-function displayImage(target){
+async function displayImage(target){
     //fade out background
     greyOut()
 
-    //make image object
-    let bigimg = document.createElement("img");
-    bigimg.id = "bigimg";
-    bigimg.className = "bigimg";
-    
+    let targetsrc
+
     //if we're passing in the path directly from the URL
     if (typeof target == "string"){
-        bigimg.src = "photos/" + target;
+        targetsrc = "photos/" + target;
     }
     //If we're passing in the thumbnail img element
     else{     
-        bigimg.src = target.src.replace(/thumbnails/,"photos");
+        targetsrc = target.src.replace(/thumbnails/,"photos");
     }
 
     //make gallery container object
     let gallerycontainer = document.createElement("gallerycontainer");
     gallerycontainer.className = "gallerycontainer";
     gallerycontainer.id = "gallerycontainer";
-    gallerycontainer.appendChild(bigimg);
 
     //generate forward button
     let forwardbutton = document.createElement("div")
@@ -109,20 +124,35 @@ function displayImage(target){
         changeimg(-1);
     });    
 
+    //make image object async
+    let bigimg = await loadGalleryImage(targetsrc)
+    //Append image to container once we have it
+    gallerycontainer.appendChild(bigimg);
     //append buttons to container
     gallerycontainer.appendChild(forwardbutton);
     gallerycontainer.insertBefore(backbutton,bigimg);
-
     //insert gallery into body
     document.body.appendChild(gallerycontainer);
-
+    
     //refresh URL
-    //let button  = document.getElementById("gallerybutton")
-    //newURL(button)
+    newURL(bigimg.src)
+}
+
+async function loadGalleryImage(src){
+    let bigimg = await loadImage(src)
+    bigimg.id = "bigimg"
+    bigimg.className = "bigimg"
+    return bigimg
+}
+
+// Push current image filename to the address bar
+function newURL(image){
+    let img = image.match(/(?<=photos\/).*/, "")[0]
+    window.history.pushState("object or string", "Title", `/?i=${img}`);
 }
 
 //cycle through images using the buttons
-function changeimg(index){
+async function changeimg(index){
     var mainimg = document.getElementById("bigimg")
     //var currimg = trimImgPath(mainimg)
     var currindex = imgs.indexOf(mainimg.src.replace(domain,""))
@@ -133,7 +163,11 @@ function changeimg(index){
     else if(newindex < 0){
         newindex = imgs.length - 1
     }
-    mainimg.src = imgs[newindex]
+    let newimg = await loadGalleryImage(imgs[newindex])
+    mainimg.remove()
+    let gallerycontainer = document.getElementById("gallerycontainer")
+    gallerycontainer.insertBefore(newimg, gallerycontainer.lastChild);
+
     
     //var button  = document.getElementById("gallerybutton")
     //newURL(button)//passing in the button so I can reuse logic
@@ -145,21 +179,4 @@ function trimImgPath(img){
     var regex = /((?<=\/)[^\/]*\.jpg)/
     var currimg = currsrc.match(regex)[0]
     return currimg
-}
-
-//inject correct image into gallery loading from URL
-function injectImage(queryString){
-    const urlParams = new URLSearchParams(queryString)
-    const category = urlParams.get('c')
-    const targetimg = urlParams.get('i')
-
-    var button = document.getElementById("gallerybutton")
-    corebutton(button)//reusing logic here, but this is ugly
-
-    //route to specific image if one is specified in the url
-    if(category == "Gallery" && targetimg !== null){
-        displayImage(targetimg)
-    }
-
-    newURL(button);
 }

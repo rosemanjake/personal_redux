@@ -18,6 +18,11 @@
 <body onload="fetchSections(), init()">
     <div class="topbar">
         <div class="toptitle">JAKE ROSEMAN</div>
+        <div id="socials" class="socials">
+            <a href="https://www.linkedin.com/in/jake-roseman/"><img class="socialicon" id="linkedin" src="svg/linkedin.svg" onmouseenter="highlightSVG('linkedin')" onmouseleave="removeHighlight('linkedin')"/></a>
+            <a href="https://www.instagram.com/roseman.jake/"><img class="socialicon" id="insta" src="svg/insta.svg" onmouseenter="highlightSVG('insta')" onmouseleave="removeHighlight('insta')"/></a>
+            <a href="https://github.com/rosemanjake/"><img class="socialicon" id="github" src="svg/github.svg" onmouseenter="highlightSVG('github')" onmouseleave="removeHighlight('github')"/></a>
+        </div>
         <div class="hamburger" onclick="hamburger()">
             <svg viewBox="0 0 100 80" width="30" height="30">
                 <rect width="100" height="10"></rect>

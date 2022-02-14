@@ -93,7 +93,7 @@ Displayed in a table, the result of this approach is the below:
 
 ### Number of days
 
-While the algorithm is calculated with a benchmark mg value, the number of days over which the taper takes place derives from the actual daily mg amount provided by the user. Using linear algebra, it is easy to calculate where a taper will reach its end. I used the formula 
+While the gradient is calculated with a benchmark mg value, the number of days over which the taper takes place derives from the actual daily mg amount provided by the user. Using linear algebra, it is easy to calculate where a taper will reach its end. I used the formula 
 
 <svg class="equation" height="50" width="100">
   <image href="svg/eq_numdays.svg" class="equationimg"/>
@@ -109,7 +109,7 @@ With the all the above values in hand, it is then possible to calculate the amou
   <image href="svg/eq_dailymg.svg" class="equationimg"/>
 </svg>
 
-where `y` is the mg amount per day, `m` is the gradient, `x` is the days elapsed and `c` is the initial daily mg value. The algorithm simply loops over each day in the taper and uses this formula calculates the corresponding mg amount.
+where `y` is the mg amount per day, `m` is the gradient, `x` is the days elapsed and `c` is the initial daily mg value. The algorithm simply loops over each day in the taper and uses this formula to calculate the corresponding mg amount.
 
 ### Daily drinks
 

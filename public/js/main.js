@@ -1,7 +1,8 @@
-//const domain = 'https://jakeroseman.com/'
-const domain = 'http://localhost:8080/'
+const domain = 'https://jakeroseman.com/'
+//const domain = 'http://localhost:8080/'
 let sectionmap
 let opencolumn = []
+let ismobile
 
 function highlightSVG(id){
     let img = document.getElementById(id)
@@ -184,7 +185,7 @@ async function fetchContent(urlentry){
                     break
             }
             reversehamburger()
-            smoothscroll()
+            fastScroll()
             carouselInit()
         })
 }
@@ -199,6 +200,9 @@ function removeDash(title){
 
 // Get the url params on page load
 function init(){
+    // Check if we're in mobile mode, track whether we are or not
+    window.onresize = checkMobile;
+    checkMobile()
     // If the URL ends with /gallery, inject gallery
     let loc = window.location.href
     if (loc.match(/\/gallery$/)){
@@ -213,15 +217,28 @@ function init(){
     // Otherwise, look for routing to a particular entry
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString);
+    
     let entry = urlParams.get("e")
+    let image = urlParams.get("i")
+    // Go to an entry if we have one in the URL
     if (entry){
         fetchContent(entry)
+        return
+    }
+    // Go to an image if we have one in the URL
+    if (image){
+        routeToImage().then(() => displayImage(image))
+        return
     }
     // Go to home if we find nothing
     else{
         fetchContent("home")
     }
-    
+}
+
+function routeToImage(){
+    injectGallery()
+    return Promise.resolve()
 }
 
 function insertAfter(newNode, existingNode) {
@@ -265,16 +282,29 @@ function reversehamburger(){
 }
 
 function fastScroll(){
+    window.scrollTo(0, 0);
+}
+
+function smoothScroll(){
     let currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
     if (currentScroll > 0) {
-         window.scrollTo (0);
+         window.requestAnimationFrame(smoothScroll);
+         window.scrollTo (0,currentScroll - (currentScroll/5));
     }
 }
 
-function smoothscroll(){
-    let currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
-    if (currentScroll > 0) {
-         window.requestAnimationFrame(smoothscroll);
-         window.scrollTo (0,currentScroll - (currentScroll/5));
+function checkMobile(){
+    if(window.innerWidth < 1200){
+        if (!ismobile){
+            console.log("transitioning to mobile")
+        }
+        ismobile = true
+    }
+    else{
+        if (ismobile){
+            console.log("transitioning away from mobile")
+            reversehamburger()
+        }
+        ismobile = false
     }
 }

@@ -3,6 +3,7 @@
     .content, .gallerycontent {
         width:95%;
         max-width:95%;
+        margin:auto;
     }
     .maintitle {
         font-size:2em;
@@ -31,8 +32,7 @@
 /* Very big screen devices (1400px and above) */
 @media only screen and (min-width: 1600px){
     .content{
-        width:40%;
-        max-width:40%;
+        max-width:1050px;
     }
 }
 
