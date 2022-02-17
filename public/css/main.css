@@ -15,6 +15,7 @@
     --pOrange:#FEB144;
     --pRed:#FF6663;
 
+    --Gargantuan:3.5em;
     --Huge:2.5em;
     --Large:1.5em;
     --Big:1.25em;
@@ -137,20 +138,35 @@ background: #a6a6a6;
 }
 
 .sidebar, .mobilesidebar{
-    max-width:18%;
+    width:250px;
+    min-width:250px;
     background-color: white;
     position:sticky;
     top:0;
     left:0;
     height:100vh;
     padding-left:35px;
-    overflow-y:auto;
     filter:drop-shadow(0 0 0.4rem lightgrey);
     scrollbar-width: thin;
+    display:flex;
+    flex-direction: column;
+}
+
+.sidebar:hover, .mobilesidebar:hover{
+    overflow-y:auto;
+}
+
+.hidden{
+    display:none;
+}
+
+.homecontent{
+    height:100%;
+    width:100%;
 }
 
 .mobilesidebar{
-    width:200px;
+    width:400px;
     max-width:500px;
     z-index: 9999999999999999;
     position:fixed;
@@ -158,13 +174,25 @@ background: #a6a6a6;
     top:0;
 }
 
-.maintitle{
+.maintitle, .maintitlehome{
     font-size:var(--Huge);
     display:block;
     font-family: 'Raleway', sans-serif;
     color: #242526;
     padding-left:0;
-    margin-top:40px;
+    margin-top:100px;
+}
+
+.maintitlehome{
+    color:white;
+}
+
+.fasttrans{
+    transition:500ms;
+}
+
+.slowtrans{
+    transition:2s;
 }
 
 .subtitle{
@@ -178,13 +206,13 @@ background: #a6a6a6;
 }
 
 .content{
-    max-width:50%;
-    display:block;
+    width: 35%;
+    display: block;
     background: white;
-    margin-left:20px;
-    padding-left:40px;
-    padding-right:40px;
-    padding-top:100px;
+    margin-left: 20px;
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-top: 100px;
     padding-bottom: 150px;
 }
 
@@ -225,7 +253,6 @@ background: #a6a6a6;
     display:flex;
     flex-direction: row;
     margin-bottom:1em;
-    margin:auto;
 }
 
 .socialicon{
@@ -280,6 +307,7 @@ code{
 }
 
 .topbar{
+    z-index: 999999999999999999999;
     display:none;
     height:5vh;
     flex-direction: row;
@@ -318,4 +346,148 @@ a:hover{
 
 strong{
     font-weight:600;
+}
+
+.backgroundimg, .backgroundimg2{
+    width:100%;
+    height:100vh;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: 50% 0;
+}
+
+.backgroundimg2{
+    height:75vh;
+}
+
+.homeblock{
+    min-height:35vh;
+    width:80%;
+    background-color: var(--OffWhite);
+    margin:auto;
+}
+
+.homeblockcontainer{
+    background-color: white;
+    width:50%;
+    margin:auto;
+    padding-left:200px;
+    padding-right:200px;
+}
+
+.homeblocktitle{
+    text-align: center;
+    font-size: var(--Huge);
+    
+    padding:1em;
+    padding-top:1.25em;
+    color:var(--YaleBlue)
+}
+
+.homeblocktext{
+    
+}
+
+.homeblockbutton{
+    padding-left:25%;
+    padding-right:25%;
+    text-align:center;
+    padding-top:35px;
+    font-size:var(--Large);
+    color:var(--YaleBlue);
+    padding-bottom:45px;
+}
+
+.homeblockbutton:hover{
+    color:var(--BlueJeans);
+    cursor:pointer;
+}
+
+.homesocials{
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-top:50px;
+}
+
+.homesocial{
+    padding-left:15px;
+    padding-right:15px;
+}
+
+/*.greetingbox, .greetingboxloaded{
+    position: absolute;
+    top: 15%;
+    right: 5%;
+    background-color: black;
+    height: 85%;
+    width: 525px;
+    background-color: rgba(0,0,0,0.4);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity:0;
+}*/
+
+.greetingbox, .greetingboxloaded{
+    position: absolute;
+    background-color: black;
+    top: 25%;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto;
+    height: 60%;
+    width: 600px;
+    background-color: rgba(0,0,0,0.4);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity:0;
+    margin:auto;
+}
+
+.greetingboxloaded{
+    top: 20%;
+    opacity: 1;
+}
+
+.notrans{
+    transition:0;
+}
+
+.greetingtext{
+    color: white;
+    opacity: 1;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align:left;
+}
+
+.greetingtitle{
+    color: white;
+    font-size: 4em;
+    margin-bottom: 0.5em;
+}
+
+.greetingsubbox{
+    font-size: var(--Large);
+    color: white;
+    margin-bottom: 1em;
+}
+
+
+.greetingsubtitle{
+    color: white;
+    margin-bottom:1em;
+}
+
+.greetingsubtitle:hover{
+    color: var(--BlueJeans);
+    cursor: pointer;
 }

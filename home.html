@@ -17,7 +17,7 @@
 
 <body onload="fetchSections(), init()">
     <div class="topbar">
-        <div class="toptitle">JAKE ROSEMAN</div>
+        <div class="toptitle" id="toptitle">JAKE ROSEMAN</div>
         <div id="socials" class="socials">
             <a href="https://www.linkedin.com/in/jake-roseman/"><img class="socialicon" id="linkedin" src="svg/linkedin.svg" onmouseenter="highlightSVG('linkedin')" onmouseleave="removeHighlight('linkedin')"/></a>
             <a href="https://www.instagram.com/roseman.jake/"><img class="socialicon" id="insta" src="svg/insta.svg" onmouseenter="highlightSVG('insta')" onmouseleave="removeHighlight('insta')"/></a>
@@ -31,14 +31,9 @@
               </svg>
         </div>
     </div>
-    <div class="maincontainer" id="maincontainer">      
+    <div class="maincontainer" id="maincontainer">
         <div class="sidebar" id="sidebar">
-            <div class="maintitle">JAKE<br>ROSEMAN</div>
-            <div class="subtitle">
-                <span onclick="routeSection('Software')" class="subtitlelink">SOFTWARE</span>, 
-                <span onclick="routeSection('Writing')" class="subtitlelink">WRITING</span>, AND 
-                <span onclick="routeSection('Gallery')" class="subtitlelink">PHOTOGRAPHY</span>
-            </div>
+            <div class="maintitle" id="maintitle">JAKE<br>ROSEMAN</div>
             <div id="menubar" class="menubar"></div>
             <div id="socials" class="socials">
                 <a href="https://www.linkedin.com/in/jake-roseman/"><img class="socialicon" id="linkedin" src="svg/linkedin.svg" onmouseenter="highlightSVG('linkedin')" onmouseleave="removeHighlight('linkedin')"/></a>

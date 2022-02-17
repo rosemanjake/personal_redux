@@ -1,8 +1,9 @@
-const domain = 'https://jakeroseman.com/'
-//const domain = 'http://localhost:8080/'
+//const domain = 'https://jakeroseman.com/'
+const domain = 'http://localhost:8080/'
 let sectionmap
 let opencolumn = []
 let ismobile
+let firstload = true;
 
 function highlightSVG(id){
     let img = document.getElementById(id)
@@ -95,6 +96,7 @@ function routeSection(sec){
             break
         case "Gallery":
             injectGallery()
+            document.getElementById("maintitle").className = "maintitle"
             break
         default:
             let column = document.getElementById(`${section}_column`)
@@ -165,7 +167,7 @@ async function fetchContent(urlentry){
     const req = new Request(`${domain}d?e=${entry}`)
     fetch(req)
         .then(response => response.json())
-        .then((data) => {
+        .then(async (data) => {
             let contentbox = document.getElementById("content")
             contentbox.className = "content"
 
@@ -173,15 +175,33 @@ async function fetchContent(urlentry){
             if(thumbs){thumbs.remove()}
 
             contentbox.innerHTML = data.text
+            let title = document.getElementById("maintitle")
             switch(entry){
                 case "home":
                     window.history.pushState("object or string", "Title", "/");
+                    title.className = "maintitlehome"
+                    //title.classList.add("slowtrans")
+                    contentbox.className = "homecontent"
+                    let greetingbox = document.getElementById("greetingbox")
+                    if (firstload){
+                        greetingbox.addEventListener('transitionend', () =>{
+                            document.getElementById("greetingbox").classList.remove("slowtrans")
+                        })
+                        await new Promise(r => setTimeout(r, 100)) 
+                        greetingbox.className = "greetingboxloaded slowtrans"          
+                        firstload = false
+                    }
+                    else{
+                        greetingbox.className = "greetingboxloaded notrans"
+                    }
                     break
                 case "about":
                     window.history.pushState("object or string", "Title", "/about");
+                    title.className = "maintitle"
                     break
                 default:
                     window.history.pushState("object or string", "Title", `/r?e=${entry}`);
+                    title.className = "maintitle"
                     break
             }
             reversehamburger()
@@ -199,7 +219,7 @@ function removeDash(title){
 }
 
 // Get the url params on page load
-function init(){
+async function init(){
     // Check if we're in mobile mode, track whether we are or not
     window.onresize = checkMobile;
     checkMobile()
@@ -307,4 +327,37 @@ function checkMobile(){
         }
         ismobile = false
     }
+}
+
+async function goHome(){
+    let content = document.getElementById("content")
+    content.className = "homecontent"
+
+    const req = new Request(`${domain}d?e=home`)
+    let res = await fetch(req)
+    let html = await res.json()
+
+    content.innerHTML = html.text
+    return
+}
+
+async function toHomeBlock(blockname){
+    let element = document.getElementById(`home${blockname.toLowerCase()}`)
+    let offset = (document.body.clientHeight - element.scrollHeight) / 2
+    const target = element.getBoundingClientRect().top + window.pageYOffset + (offset * -1);
+    for (var y = 0; y <= 4200; y += 150) {
+        window.scrollTo({top: target, behavior: 'smooth'})
+        await scrollDelay(60)
+    }
+}
+
+function scrollDelay(ms) {
+    return new Promise(res => setTimeout(res, ms));
+}
+
+// Route to a random entry in the given section
+function randomEntry(section){
+    let entries = sectionmap[section]
+    let i = Math.floor((Math.random() * entries.length));
+    fetchContent(entries[i])
 }

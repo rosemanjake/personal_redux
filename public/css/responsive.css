@@ -14,6 +14,9 @@
     .sidebar{
         display:none;
     }
+    body{
+        font-size:14pt
+    }
     .topbar {
         display: flex;
     }
