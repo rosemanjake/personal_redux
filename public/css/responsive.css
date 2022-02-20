@@ -1,4 +1,17 @@
 /* Big screen devices (889px and above) */
+@media only screen and (max-width: 800px) {
+    body{
+        font-size:12pt !important
+    }
+    content{
+        width:100% !important
+    }
+    .gallery_button{
+        display:none !important
+    }
+}
+
+/* Big screen devices (889px and above) */
 @media only screen and (max-width: 1200px) {
     .content, .gallerycontent {
         width:95%;
@@ -6,7 +19,7 @@
         margin:auto;
     }
     .maintitle {
-        font-size:2em;
+        font-size:var(--Huge);
     }
     .subtitle{
         display:none;
@@ -19,16 +32,81 @@
     }
     .topbar {
         display: flex;
+        height:120px;
     }
     .content{
         width:80%;
         max-width:80%;
+        padding-left:60px;
+        padding-right:60px;
+        padding-top:60px;
+        min-width:0;
     }
     .twocolumn{
         flex-direction: column;
     }
     .leftcolumn, .rightcolumn{
         width: 100%;
+    }
+    .homeblockcontainer{
+        background-color:white;
+        width:80%;
+        margin:auto;
+        padding-left:50px;
+        padding-right:50px;
+    }
+    .articletable{
+        width:80%;
+    }
+    .gallery_button{
+        font-size: 2em;
+        padding:10px;
+    }
+    .bigimg{
+        max-height:90%;
+        margin-top:5vh;
+    } 
+    .thumbnail{
+        height:375px;  
+    }
+    :root{
+        --Gargantuan:4em;
+        --Huge:3em;
+        --Large:2em;
+        --Big:1.75em;
+        --Small:.9em;
+    }
+    .greetingbox, .greetingboxloaded{
+        height: 40%;
+        width: 100%;
+        margin-bottom: 200px;
+    }
+    .homeblock{
+        min-height: 30vh;
+    }
+    .greetingtext{
+        width: 80%;
+        font-size: 1.5em;    
+    }
+    .homeblocktext{
+        font-size:1.5em;
+        padding-top:20px;
+        padding-bottom:20px;
+    }
+    .hamburgersvg{
+        height:70px;
+        width:70px;
+    }
+    .socialicon{
+        width:35px;
+        height:35px;
+    }
+    .socials{
+        padding-right:40px;
+    }
+    .dropdownarrow, .dropdownimg{
+        width:20;
+        height:20;
     }
 }
 

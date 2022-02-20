@@ -14,7 +14,7 @@ const path = require('path');
 
 const app = express();
 
-const corpus = parser.parse()
+const library = parser.parse()
 const gallery = studio.get()
 
 app.use(express.static(__dirname+'/public'));
@@ -40,10 +40,11 @@ app.get('/about', (req, res) => {
     fs.createReadStream('./home.html').pipe(res)
 });
 
+/*
 app.get('/r', (req, res) => {
     res.writeHead(200, { 'content-type': 'text/html' })
     fs.createReadStream('./home.html').pipe(res)
-});
+});*/
 
 app.get('/g', (req, res) => {
     res.writeHead(200, { 'content-type': 'application/json', 'Access-Control-Allow-Origin' : '*'})
@@ -67,14 +68,14 @@ app.get('/d', (req, res) => {
     })
     
     if(section){
-        res.end(JSON.stringify(corpus.sectionmap[section]))
+        res.end(JSON.stringify(library.sectionmap[section]))
     }
     else if (entry){
         entry = parser.removeDash(entry)
-        res.end(JSON.stringify(corpus.entrymap[entry]))
+        res.end(JSON.stringify(library.entrymap[entry]))
     }
     else{
-        res.end(JSON.stringify(corpus.sectionmap))
+        res.end(JSON.stringify(library.sectionmap))
     } 
 });
 

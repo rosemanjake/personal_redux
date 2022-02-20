@@ -1,7 +1,6 @@
-const { text } = require('express');
+
 const fs = require('fs');
 var path = require('path');
-const { title } = require('process');
 
 module.exports = {
     parse: function () {
@@ -80,10 +79,8 @@ function getEntries(files, sectiontitle){
 }
 
 function toHTML(text){
-    // Replace ``` with pre tags
-    text = codeToHTML(text)
     // Remove new lines from code snippets marked with <pre>, to prevent it breaking the splitter
-    premap = removeLines(/<pre.*?(?<=<\/pre>)/gms, text)
+    premap = removeLines(/`{3}.*?`{3}/gms, text)
     if (premap){
         text = mapSwap(premap, text)
     }
@@ -91,30 +88,22 @@ function toHTML(text){
     paras = text.split(/[\r\n]{2}/gms)
     // Remove empty paras
     paras = paras.filter(para => !para.match(/^[\s]*$/gms))
+    // Restore whitespace to snippets
+    if (premap){
+        premapinverse = inversemap(premap)
+        let keys = Array.from(premap.values())
+        for (let i = 0; i < paras.length; i++){
+            let currpara = paras[i]
+            if (keys.includes(currpara)){
+                let newpara = premapinverse.get(currpara)
+                paras[i] = newpara
+            }
+        }
+    }
     // Format paras
     paras = paras.map(para => formatPara(para))
     // Rejoin text
     text = paras.join("\n")
-    // Restore whitespace to snippets
-    if (premap){
-        premapinverse = inversemap(premap)
-        text = mapSwap(premapinverse, text)    
-    }
-
-    return text
-}
-
-function codeToHTML(text){
-    let codeblocks = text.match(/[`]{3}.*?[`]{3}/gms)
-    if (!codeblocks){
-        return text
-    }
-
-    codeblocks.forEach((block) => {
-        let newblock = block.replace(/^[`]{3}/, "<pre class=\"prettyprint\">")
-        newblock = newblock.replace(/[`]{3}$/, "</pre>")
-        text = text.replace(block, newblock)
-    })
 
     return text
 }
@@ -174,16 +163,53 @@ function formatPara(para){
         let src = para.match(/(?<=\!\[[^\]]*\]\()[^\)]*(?=\))/gms)[0]
         para = `<figure class="articlefig"><img src="images/${src}" class="articleimg"><figcaption class="articlecaption">${caption}</figcaption></figure>`  
     }
+    else if(para.match(/^```/)){
+        // Replace ``` with pre tags
+        para = formatCodeBlocks(para)
+    }
     // Wrap with <p> tags by default
     else{
         para = `<p>${para}</p>`
+        // Replace in-line code marked with `...` with spans
+        // This needs to be here or it can mess with codeblocks 
+        para = formatInlineCode(para)
     }
-
-    para = para.replace(/`\b/gms, "<code>")
-    para = para.replace(/\b`/gms, "</code>")
+    
+    // Convert links to HTML
     para = linksToHTML(para)
 
     return para
+}
+
+// Replace backticks with span tags
+function formatInlineCode(text){
+    let snippets = text.match(/`[^`]*`/gms)
+    if (!snippets){return text}
+
+    snippets.forEach((snippet) => {
+        let newsnippet = snippet.replace(/^`/gms, "<span class=\"inlinecode\">")
+        newsnippet = newsnippet.replace(/`$/gms, "</span>")
+        text = text.replace(snippet, newsnippet)
+    })
+
+    return text
+}
+
+function formatCodeBlocks(text){
+    let snippets = text.match(/^`{3}.*`{3}$/gms)
+    if (!snippets){return text}
+
+    snippets.forEach((snippet) => {
+        let newsnippet = snippet.replace(/```[\r\n]{2}|[r\n]{2}```/gms, "```")
+        //newsnippet = newsnippet.replace(/[\r\n]{2}/gms, "<br>") 
+        //newsnippet = newsnippet.replace(/```[\s]*<br>/gms, "```") 
+        //newsnippet = newsnippet.replace(/<br>[\s]*```/gms, "```") 
+        newsnippet = newsnippet.replace(/^```/, "<div class=\"code\"><pre>")
+        newsnippet = newsnippet.replace(/```$/, "</pre></div>")
+        text = text.replace(snippet, newsnippet)
+    })
+
+    return text.replace(/<[/]*p>/gms, "")
 }
 
 // Converts Md links to HTML

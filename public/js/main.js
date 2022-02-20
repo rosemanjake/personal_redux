@@ -1,9 +1,65 @@
-//const domain = 'https://jakeroseman.com/'
-const domain = 'http://localhost:8080/'
+const domain = 'https://jakeroseman.com/'
+//const domain = 'http://localhost:8080/'
 let sectionmap
 let opencolumn = []
 let ismobile
 let firstload = true;
+let currhomeimg = 0
+let allloaded = false
+
+window.addEventListener('scroll', throttle(lazy, 100))
+
+function throttle(callback, interval) {
+    let enableCall = true;
+  
+    return function(...args) {
+      if (!enableCall) return;
+  
+      enableCall = false;
+      callback.apply(this, args);
+      setTimeout(() => enableCall = true, interval);
+    }
+  }
+
+// Lazy load images on the home page
+function lazy(){
+    // Check if we're on the home page
+    if(!document.getElementById('greetingbox')){
+        return
+    }
+
+    // How far above the image do we want to trigger loading the following image
+    let earlyoffset = 1000 
+
+    let homeimgs = document.getElementsByClassName("backgroundimg2")
+    // How far have we already scrolled?
+    let curroffset = window.pageYOffset + document.body.clientHeight
+
+    // Loop through images and load where necessary
+    for(i = 0; i < homeimgs.length; i++){
+        let currimg = homeimgs[i]
+        
+        // Top of the image, plus the offset we set above
+        let top = currimg.getBoundingClientRect().top + window.pageYOffset - earlyoffset
+        let bottom = currimg.getBoundingClientRect().bottom + window.pageYOffset
+        
+        // We need to get the following image as that's really what we actually want to load
+        let nextimg
+        i < homeimgs.length - 1 ? nextimg = homeimgs[i + 1] : nextimg = null
+
+        // If we have scrolled enough that the target region is in sight
+        if (curroffset > top && curroffset < bottom){
+            // Set src of current image
+            currimg.style.backgroundImage = `url(images/home${i}.jpg)`
+            
+            // Only load the next image if there if is one to load
+            // Only load one image when we first load the page
+            if(nextimg && window.pageYOffset > 0){
+                nextimg.style.backgroundImage = `url(images/home${i + 1}.jpg)`
+            }
+        }
+      }
+}
 
 function highlightSVG(id){
     let img = document.getElementById(id)
@@ -53,21 +109,15 @@ async function fetchSections(data = {}){
 }
 
 function makeArrow(section){
-    let h = 10
-    let w = 10
     
     let container = document.createElement('div')
     container.className = "arrowcontainer"
 
     let arrow = document.createElement('svg')
-    arrow.width = w
-    arrow.height = h
     arrow.className = "dropdownimg"
     
     let img = document.createElement('img')
     img.src = "svg/downarrow.svg"
-    img.width = w
-    img.height = h
     img.className = "dropdownarrow"
     img.id = `${section}_arrow`
 
@@ -175,12 +225,10 @@ async function fetchContent(urlentry){
             if(thumbs){thumbs.remove()}
 
             contentbox.innerHTML = data.text
-            let title = document.getElementById("maintitle")
+
             switch(entry){
                 case "home":
                     window.history.pushState("object or string", "Title", "/");
-                    title.className = "maintitlehome"
-                    //title.classList.add("slowtrans")
                     contentbox.className = "homecontent"
                     let greetingbox = document.getElementById("greetingbox")
                     if (firstload){
@@ -194,19 +242,17 @@ async function fetchContent(urlentry){
                     else{
                         greetingbox.className = "greetingboxloaded notrans"
                     }
+                    lazy()
                     break
                 case "about":
                     window.history.pushState("object or string", "Title", "/about");
-                    title.className = "maintitle"
                     break
                 default:
-                    window.history.pushState("object or string", "Title", `/r?e=${entry}`);
-                    title.className = "maintitle"
+                    window.history.pushState("object or string", "Title", `/?e=${entry}`);
                     break
             }
             reversehamburger()
             fastScroll()
-            carouselInit()
         })
 }
 
@@ -246,19 +292,15 @@ async function init(){
         return
     }
     // Go to an image if we have one in the URL
-    if (image){
-        routeToImage().then(() => displayImage(image))
+    else if (image){
+        await injectGallery()
+        displayImage(image)
         return
     }
     // Go to home if we find nothing
     else{
         fetchContent("home")
     }
-}
-
-function routeToImage(){
-    injectGallery()
-    return Promise.resolve()
 }
 
 function insertAfter(newNode, existingNode) {
@@ -270,7 +312,12 @@ function hamburger(){
     if(reversehamburger()){
         return
     }
-    
+
+    // Close gallery image if it's open
+    let gallerycontainer = document.getElementById("gallerycontainer")
+    if (gallerycontainer){
+        endGrey()
+    }
 
     // Get sidebar, back it up, and remove it from the maincontainer
     let sidebar = document.getElementById("sidebar")
@@ -309,20 +356,20 @@ function smoothScroll(){
     let currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
     if (currentScroll > 0) {
          window.requestAnimationFrame(smoothScroll);
-         window.scrollTo (0,currentScroll - (currentScroll/5));
+         window.scrollTo(0,currentScroll - (currentScroll/5));
     }
 }
 
 function checkMobile(){
     if(window.innerWidth < 1200){
         if (!ismobile){
-            console.log("transitioning to mobile")
+            //console.log("transitioning to mobile")
         }
         ismobile = true
     }
     else{
         if (ismobile){
-            console.log("transitioning away from mobile")
+            //console.log("transitioning away from mobile")
             reversehamburger()
         }
         ismobile = false
@@ -345,19 +392,166 @@ async function toHomeBlock(blockname){
     let element = document.getElementById(`home${blockname.toLowerCase()}`)
     let offset = (document.body.clientHeight - element.scrollHeight) / 2
     const target = element.getBoundingClientRect().top + window.pageYOffset + (offset * -1);
-    for (var y = 0; y <= 4200; y += 150) {
-        window.scrollTo({top: target, behavior: 'smooth'})
-        await scrollDelay(60)
+    let delta = target - (document.body.clientHeight + window.pageYOffset)
+    
+    // Take longer to scroll when we go further
+    if (delta < 1500){
+        scrollToTimed(target, 2500)
+    }
+    else{
+        scrollToTimed(target, 3500)
     }
 }
-
-function scrollDelay(ms) {
-    return new Promise(res => setTimeout(res, ms));
-}
-
+    
 // Route to a random entry in the given section
 function randomEntry(section){
     let entries = sectionmap[section]
     let i = Math.floor((Math.random() * entries.length));
     fetchContent(entries[i])
+}
+
+// Scroll code courtesy of: https://stackoverflow.com/questions/50589137/scrollto-speed-duration-setting
+
+// Element or Position to move + Time in ms (milliseconds)
+function scrollToTimed(element, duration) {
+    var e = document.documentElement;
+    if(e.scrollTop===0){
+        var t = e.scrollTop;
+        ++e.scrollTop;
+        e = t+1===e.scrollTop--?e:document.body;
+    }
+    scrollToC(e, e.scrollTop, element, duration);
+}
+
+// Element to move, element or px from, element or px to, time in ms to animate
+function scrollToC(element, from, to, duration) {
+    if (duration <= 0) return;
+    if(typeof from === "object")from=from.offsetTop;
+    if(typeof to === "object")to=to.offsetTop;
+    // Choose one effect like easeInQuart
+    scrollToX(element, from, to, 0, 1/duration, 20, easeOutCuaic);
+}
+
+function scrollToX(element, xFrom, xTo, t01, speed, step, motion) {
+    if (t01 < 0 || t01 > 1 || speed<= 0) {
+       element.scrollTop = xTo;
+        return;
+    }
+    element.scrollTop = xFrom - (xFrom - xTo) * motion(t01);
+    t01 += speed * step;
+    
+    setTimeout(function() {
+        scrollToX(element, xFrom, xTo, t01, speed, step, motion);
+    }, step);
+}
+
+/* Effects List */
+function linearTween(t){
+    return t;
+}
+
+function easeInQuad(t){
+    return t*t;
+}
+
+function easeOutQuad(t){
+    return -t*(t-2);
+}
+
+function easeInOutQuad(t){
+    t/=0.5;
+    if(t<1)return t*t/2;
+    t--;
+    return (t*(t-2)-1)/2;
+}
+
+function easeInCuaic(t){
+    return t*t*t;
+}
+
+function easeOutCuaic(t){
+    t--;
+    return t*t*t+1;
+}
+
+function easeInOutCuaic(t){
+    t/=0.5;
+    if(t<1)return t*t*t/2;
+    t-=2;
+    return (t*t*t+2)/2;
+}
+
+function easeInQuart(t){
+    return t*t*t*t;
+}
+
+function easeOutQuart(t){
+    t--;
+    return -(t*t*t*t-1);
+}
+
+function easeInOutQuart(t){
+    t/=0.5;
+    if(t<1)return 0.5*t*t*t*t;
+    t-=2;
+    return -(t*t*t*t-2)/2;
+}
+
+function easeInQuint(t){
+    return t*t*t*t*t;
+}
+
+function easeOutQuint(t){
+    t--;
+    return t*t*t*t*t+1;
+}
+
+function easeInOutQuint(t){
+    t/=0.5;
+    if(t<1)return t*t*t*t*t/2;
+    t-=2;
+    return (t*t*t*t*t+2)/2;
+}
+
+function easeInSine(t){
+    return -Math.cos(t/(Math.PI/2))+1;
+}
+
+function easeOutSine(t){
+    return Math.sin(t/(Math.PI/2));
+}
+
+function easeInOutSine(t){
+    return -(Math.cos(Math.PI*t)-1)/2;
+}
+
+function easeInExpo(t){
+    return Math.pow(2,10*(t-1));
+}
+
+function easeOutExpo(t){
+    return -Math.pow(2,-10*t)+1;
+}
+
+function easeInOutExpo(t){
+    t/=0.5;
+    if(t<1)return Math.pow(2,10*(t-1))/2;
+    t--;
+    return (-Math.pow(2,-10*t)+2)/2;
+}
+
+function easeInCirc(t){
+    return -Math.sqrt(1-t*t)-1;
+}
+
+function easeOutCirc(t){
+    t--;
+    return Math.sqrt(1-t*t);
+}
+
+function easeInOutCirc(t){
+    t/=0.5;
+    if(t<1)return -(Math.sqrt(1-t*t)-1)/2;
+    t-=2;
+    return (Math.sqrt(1-t*t)+1)/2;
 }

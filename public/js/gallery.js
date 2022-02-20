@@ -8,17 +8,25 @@ async function injectGallery(){
     contentbox.className = "gallerycontent"
     contentbox.innerHTML = ""
 
+    let spinner = makeSpinner()
+    spinner.className = "bigspinner"
+    contentbox.appendChild(spinner)
+
     const req = new Request(`${domain}g`)
     let res = await fetch(req)
+
     imgs = await res.json()
+
     let thumbs = await loadThumbs(imgs)
 
+    spinner.remove()
     contentbox.appendChild(thumbs)
+
     // Seems like the browser needs just a little bit of time to load everything
     // If I don't set the time out, my fade in transition doesn't work with the class name change
-    await new Promise(r => setTimeout(r, 50)); 
+    await new Promise(r => setTimeout(r, 500)); 
     thumbs.className = "thumbsloaded"
-    
+    await new Promise(r => setTimeout(r, 100)); 
     fastScroll()
 }
 
@@ -124,18 +132,30 @@ async function displayImage(target){
         changeimg(-1);
     });    
 
-    //make image object async
+
+    // Get loading spinner
+    let spinner = makeSpinner()
+    gallerycontainer.appendChild(spinner)
+    // insert gallery into body
+    document.body.appendChild(gallerycontainer);
+    // make image object async
     let bigimg = await loadGalleryImage(targetsrc)
-    //Append image to container once we have it
+    // Append image to container once we have it
+    gallerycontainer.removeChild(gallerycontainer.firstChild)
     gallerycontainer.appendChild(bigimg);
-    //append buttons to container
+    // append buttons to container
     gallerycontainer.appendChild(forwardbutton);
     gallerycontainer.insertBefore(backbutton,bigimg);
-    //insert gallery into body
-    document.body.appendChild(gallerycontainer);
     
     //refresh URL
     newURL(bigimg.src)
+}
+
+function makeSpinner(){
+    let spinner = document.createElement('div')
+    spinner.className = "Spinner"
+    spinner.innerHTML = "Loading..."
+    return spinner
 }
 
 async function loadGalleryImage(src){
@@ -163,10 +183,17 @@ async function changeimg(index){
     else if(newindex < 0){
         newindex = imgs.length - 1
     }
-    let newimg = await loadGalleryImage(imgs[newindex])
     mainimg.remove()
-    let gallerycontainer = document.getElementById("gallerycontainer")
+    let spinner = makeSpinner()
+    gallerycontainer.insertBefore(spinner, gallerycontainer.lastChild);
+    gallerycontainer.firstChild.style.display = "none"
+    gallerycontainer.lastChild.style.display = "none"
+
+    let newimg = await loadGalleryImage(imgs[newindex])
+    gallerycontainer.removeChild(spinner)
     gallerycontainer.insertBefore(newimg, gallerycontainer.lastChild);
+    gallerycontainer.firstChild.style.display = "block"
+    gallerycontainer.lastChild.style.display = "block"
 
     
     //var button  = document.getElementById("gallerybutton")
