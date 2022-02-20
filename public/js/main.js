@@ -252,8 +252,9 @@ async function fetchContent(urlentry){
                     break
             }
             reversehamburger()
-            fastScroll()
+            //fastScroll()
         })
+        fastScroll()
 }
 
 function addDash(title){
