@@ -116,7 +116,7 @@ let top = currimg.getBoundingClientRect().top + window.pageYOffset - earlyoffset
 let bottom = currimg.getBoundingClientRect().bottom + window.pageYOffset
 ```
 
-This allows us to track whether or not the user has scrolled the given div into view. You may notice that I also subtract an `earlyoffset` from the `top` value. This artificially raises the top of the target region for the `div` and allows the browser to trigger a function call before the div is actually in view.
+This allows the browser to track whether or not the user has scrolled the given div into view. You may notice that I also subtract an `earlyoffset` from the `top` value. This artificially raises the top of the target region for the `div` and allows the browser to trigger a function call before the div is actually in view.
 
 When the user scrolls into a target region, the browser loads the given image if it has not already loaded, as well as the next image. This ensures that the when scrolling down, each image has already loaded before its given div is reached. It also minimises the amount downloaded on initial load.
 

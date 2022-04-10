@@ -55,7 +55,9 @@ if __name__ == "__main__":
     
     # Generate the thumbnails
     imgs = getImages(currdir + "/public/photos")
-    #processimgs(imgs)
+    processimgs(imgs)
     
     # Deploy to app engine
-    deploy(currdir)
+    #deploy(currdir)
+
+    print("Finished!")

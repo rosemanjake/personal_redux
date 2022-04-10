@@ -252,9 +252,9 @@ async function fetchContent(urlentry){
                     break
             }
             reversehamburger()
-            //fastScroll()
-        })
-        fastScroll()
+        }).then(fastScroll())
+        
+        
 }
 
 function addDash(title){
@@ -397,10 +397,10 @@ async function toHomeBlock(blockname){
     
     // Take longer to scroll when we go further
     if (delta < 1500){
-        scrollToTimed(target, 2500)
+        scrollToTimed(target, 1700)
     }
     else{
-        scrollToTimed(target, 3500)
+        scrollToTimed(target, 2700)
     }
 }
     

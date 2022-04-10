@@ -22,7 +22,7 @@ You start Caffeine Quitter by telling it how much caffeine you consume and how q
 
 ### Statistics
 
-Caffeine Quitter produces a range of statistics to provide you with greater insight into their taper. This is key to providing you with a real sense of progress and achievement as you push through the taper.
+Caffeine Quitter produces a range of statistics to provide you with greater insight into your taper. This is key to providing you with a real sense of progress and achievement as you push through the taper.
 
 ![Taper statistics](images/taperstats.webp)
 
@@ -93,7 +93,7 @@ Displayed in a table, the result of this approach is the below:
 
 #### Implementation
 
-The `calcGradient()` function calculates the benchmark gradient that matches the user's input. The function holds a series of `Map` variables contain all the information in the table above. The keys of each `Map` are the benchmark daily miligram values and the values are the corresponding gradients. There is a map for each intensity level.
+The `calcGradient()` function calculates the benchmark gradient that matches the user's input. The function holds a series of `Map` variables that contain all the information in the table above. The keys of each `Map` are the benchmark daily miligram values and the values are the corresponding gradients. There is a map for each intensity level.
 
 The app then fetch the gradient with the following code:
 
@@ -125,7 +125,7 @@ where `y` is total number of days over which the taper takes place, `m` is the g
 
 #### Implementation
 
-In Kotlin, the `calcDays()` function performs this calculation. If it produces a value less than 2, we set the day value to 0, which will be cold turkey. If it calculates more than 90 days, it rounds the value to 90. This is because a taper less than 2 days is of course not a taper and because 90 should be enough for anyone to quit caffeine.
+In Kotlin, the `calcDays()` function performs this calculation. If it produces a value less than 2, it sets the day value to 0, which will be cold turkey. If it calculates more than 90 days, it rounds the value to 90. This is because a taper less than 2 days is of course not a taper and because 90 should be enough for anyone to quit caffeine.
 
 The function appears as follows:
 
@@ -156,7 +156,7 @@ where `y` is the miligram amount per day, `m` is the gradient, `x` is the days e
 
 #### Implementation
 
-The `calcMgPerDay()` function returns the daily miligram amounts. The algorithm loops over each day in the taper and uses the above formula to calculate the day's corresponding miligram amount.
+The `calcMgPerDay()` function returns the daily miligram amounts. The algorithm loops over each day in the taper and uses the formula below to calculate the day's corresponding miligram amount.
 
 ```
 fun calcMgPerDay(days: Int, startingmg: Double): List<Double>{
@@ -176,7 +176,7 @@ fun calcMgPerDay(days: Int, startingmg: Double): List<Double>{
 }
 ```
 
-Note that here the app measures the gradient again. This is because here it needs the gradient of the line plotting the number of days trending to 0. The exact gradient of line will be different from the benchmark gradient we used to calculate the number of days.
+Note that here the app measures the gradient again. This is because here it needs the gradient of the line plotting the number of days trending to 0. The exact gradient of line will be different from the benchmark gradient used to calculate the number of days.
 
 ### Daily drinks
 

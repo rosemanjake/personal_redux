@@ -195,6 +195,9 @@ async function changeimg(index){
     gallerycontainer.firstChild.style.display = "block"
     gallerycontainer.lastChild.style.display = "block"
 
+
+    //refresh URL
+    newURL(bigimg.src)
     
     //var button  = document.getElementById("gallerybutton")
     //newURL(button)//passing in the button so I can reuse logic
