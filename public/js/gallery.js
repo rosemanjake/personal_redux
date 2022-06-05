@@ -175,7 +175,7 @@ function newURL(image){
 async function changeimg(index){
     var mainimg = document.getElementById("bigimg")
     //var currimg = trimImgPath(mainimg)
-    var currindex = imgs.indexOf(mainimg.src.replace(domain,""))
+    var currindex = imgs.indexOf(mainimg.src.match(/photos\/.*$/)[0])
     var newindex = currindex + index
     if(newindex >= imgs.length){
         newindex = 0

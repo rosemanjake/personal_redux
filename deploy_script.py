@@ -58,6 +58,6 @@ if __name__ == "__main__":
     processimgs(imgs)
     
     # Deploy to app engine
-    #deploy(currdir)
+    deploy(currdir)
 
     print("Finished!")
