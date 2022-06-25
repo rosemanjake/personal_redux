@@ -33,9 +33,9 @@ I run a Node Express server with a series of endpoints for delivering the conten
 The object model to represent this content comprises two primary classes, `Library` and `Gallery`.
 
 <ul>
-    <li><strong>Library</strong>: A representation of the text content of the website, broken into sections and entries. It's two most important member variables are <span class="inlinecode">sectionmap</span> and <span class="inlinecode">entrymap</span></li>
+    <li><strong>Library</strong>: A representation of the text content of the website, broken into sections and entries. Its two most important member variables are <span class="inlinecode">sectionmap</span> and <span class="inlinecode">entrymap</span></li>
     <ul>
-        <li><strong>Section map</strong>: A JS object literal where the keys are sections names, and the values are lists of the entries within those sections. The site fetches this on page load in order to populate the side bar. A section ultimately corresponds to a folder on the server containing a series of `.md` files.</li>
+        <li><strong>Section map</strong>: A JS object literal where the keys are sections names, and the values are lists of the entries within those sections. The site fetches this on page load in order to populate the side bar. A section ultimately corresponds to a folder on the server containing a series of <span class='inlinecode'>.md</span> files.</li>
         <li><strong>Entry map</strong>: A JS object literal where the keys are the entry names and the values are the HTML of those entries. When you click a link to an entry in the side bar, the browser takes the name of the entry and uses it to fetch the corresponding HTML contents from the <span class="inlinecode">entrymap</span> on the server. An entry is ultimately an <span class="inlinecode">.md</span> file in a section folder on the server.</li>
     </ul>
     <li><strong>Gallery</strong>: A representation of the images in the gallery. Its only member variable is <span class="inlinecode">images</span>, a list of the image paths in the gallery.</li>

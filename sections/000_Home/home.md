@@ -1,28 +1,23 @@
 <div class="backgroundimgcontainer" onload="lazy()">
     <!--<div class="backgroundimg" style="background-image:url(photos/1.jpg)"></div>-->
     <div class="backgroundimg" style="background-image:url(images/homemain.jpg)">
-        <div class="greetingbox slowtrans" id="greetingbox">
-            <div class="greetingtitle">JAKE ROSEMAN</div>
-            <div class="hometitleline"></div>
-            <div class="greetingsubbox">
-                    <span onclick="toHomeBlock('software')" class="greetingsubtitle">SOFTWARE</span>  |  
-                    <span onclick="toHomeBlock('writing')" class="greetingsubtitle">WRITING</span>  |  
-                    <span onclick="toHomeBlock('photos')" class="greetingsubtitle">PHOTOGRAPHY</span>                
-            </div>
-            <div class="greetingtext">
-            I am a writer, developer, and hobbyist photographer in London. It is my pleasure to use this space to share some of my personal work.  
-            </div>
-            <div onclick="toHomeBlock('contact')" class="homecontact">CONTACT</div>
+    <div class="greetingbox fasttrans" id="greetingbox">
+        <div class="greetingtitle" onclick="toHomeBlock('contact')">JAKE ROSEMAN</div>
+        <div class="greetingsubbox">
+            <div onclick="toHomeBlock('software')" class="greetingsubtitle">SOFTWARE</div> 
+            <div>&#x2022;</div>
+            <div onclick="toHomeBlock('writing')" class="greetingsubtitle">WRITING</div>
+            <div>&#x2022;</div>
+            <div onclick="toHomeBlock('photos')" class="greetingsubtitle">PHOTOGRAPHY</div>                
         </div>
-    <!--</div>-->
+    </div>
 </div>
 
 <div class="homeblock" id="homesoftware">
     <div class="homeblockcontainer">
-        <div class="homeblocktitle">SOFTWARE</div>
-        <div class="homeblockline"></div>
-        <div class="homeblocktext">I am a keen software developer. In both a professional and private capacity, I have built web, desktop, and mobile applications. Here you will find some of my favourite personal projects.</div>
-        <div class="homeblockbutton" onclick="randomEntry('Software')">CHECK OUT A PROJECT</div>
+        <div class="homeblocktitle">Software</div>      
+        <div class="homeblocktext">I am a keen software developer. I have built web, desktop, and mobile applications. Here you will find some of my favourite personal projects.</div>
+        <div class="homeblockbutton" onclick="randomEntry('Software')">Check out a project</div>
     </div>
 </div>
 
@@ -30,10 +25,9 @@
 
 <div class="homeblock" id="homewriting">
     <div class="homeblockcontainer">
-        <div class="homeblocktitle">WRITING</div>
-        <div class="homeblockline"></div>
+        <div class="homeblocktitle">Writing</div>      
         <div class="homeblocktext">I write short fiction and interactive fiction, and I currently work at Google as a technical writer. My work has appeared in magazines and literary journals. You will find some of my favourite pieces here.</div>
-        <div class="homeblockbutton" onclick="randomEntry('Writing')">READ A PIECE</div>
+        <div class="homeblockbutton" onclick="randomEntry('Writing')">Read a piece</div>
     </div>
 </div>
 
@@ -41,10 +35,9 @@
 
 <div class="homeblock" id="homephotos">
     <div class="homeblockcontainer">
-        <div class="homeblocktitle">PHOTOGRAPHY</div>
-        <div class="homeblockline"></div>
-        <div class="homeblocktext">I love mountains, hiking, and trekking. I take photographs of tall mountains and wild spaces. Here you will find a gallery of my favourite images.</div>
-        <div class="homeblockbutton" onclick="injectGallery()">VIEW THE GALLERY</div>
+        <div class="homeblocktitle">Photography</div>
+        <div class="homeblocktext">I love hiking and trekking and I take photographs of the wild spaces I visit. Here you will find a gallery of my favourite images.</div>
+        <div class="homeblockbutton" onclick="injectGallery()">View the gallery</div>
     </div>
 </div>
 
@@ -52,8 +45,7 @@
 
 <div class="homeblock" style="padding-bottom:75px;" id="homecontact">
     <div class="homeblockcontainer">
-        <div class="homeblocktitle">CONTACT</div>
-        <div class="homeblockline"></div>
+        <div class="homeblocktitle">Contact</div>   
         <div class="homeblocktext" style="text-align:center">If you would like to get in touch, feel free to do so by social media.</div>
         <div class="homesocials">
             <a href="https://www.linkedin.com/in/jake-roseman/" class="homesocial"><img class="socialiconbig" id="linkedinbig" src="svg/linkedinbig.svg" onmouseenter="highlightSVG('linkedinbig')" onmouseleave="removeHighlight('linkedinbig')"/></a>

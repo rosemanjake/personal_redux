@@ -220,11 +220,11 @@ background: #a6a6a6;
 }
 
 .fasttrans{
-    transition:500ms;
+    transition:250ms;
 }
 
 .slowtrans{
-    transition:2s;
+    transition:800ms;
 }
 
 .subtitle{
@@ -418,11 +418,13 @@ strong{
     font-size: var(--Huge);
     
     padding-top:1.25em;
+    margin-bottom:1em;
     color:var(--YaleBlue)
 }
 
 .homeblocktext{
-    color:black
+    color:black;
+    text-align:center;
 }
 
 .homeblockbutton{
@@ -487,7 +489,6 @@ strong{
 
 .greetingbox, .greetingboxloaded{
     width: 900px;
-    background-color: rgba(255,255,255,.9);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -508,7 +509,7 @@ strong{
 }
 
 .greetingtext{
-    color: black;
+    color: white;
     opacity: 1;
     width: 55%;
     margin-left: auto;
@@ -517,24 +518,31 @@ strong{
 }
 
 .greetingtitle{
-    color: var(--YaleBlue);
+    color: white;
     font-size: 4em;
     margin-bottom: 0.5em;
+    font-weight:600;
 }
 
 .greetingsubbox{
     font-size: var(--Large);
-    color: var(--YaleBlue);
+    color: white;
+    text-align: left;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width:80%;
+    margin:auto;
     margin-bottom: 1em;
 }
 
 
 .greetingsubtitle{
-    color: var(--YaleBlue);
+    color: white;
     margin-bottom:1em;
 }
 
-.greetingsubtitle:hover, .homecontact:hover{
+.greetingsubtitle:hover, .homecontact:hover, .greetingtitle:hover{
     color: var(--BlueJeans);
     cursor: pointer;
 }
@@ -543,7 +551,7 @@ strong{
     margin-top:1em;
     text-align:center;
     font-size:var(--Large);
-    color:var(--YaleBlue)
+    color:white
 }
 
 .hamburgersvg{

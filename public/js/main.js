@@ -397,10 +397,10 @@ async function toHomeBlock(blockname){
     
     // Take longer to scroll when we go further
     if (delta < 1500){
-        scrollToTimed(target, 1700)
+        scrollToTimed(target, 800)
     }
     else{
-        scrollToTimed(target, 2700)
+        scrollToTimed(target, 1500)
     }
 }
     
