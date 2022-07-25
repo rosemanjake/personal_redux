@@ -1,8 +1,8 @@
-# Hwaet
+# Hwæt
 
 I have always enjoyed reading different translations of a foreign language text in parallel. Switching between the original text and the translations allows you to more clearly understand the original language without resorting to dictionaries and reference grammars. 
 
-I have built a website that allows you to switch between translations of Beowulf, as well as the original text. It is called <a href='hwaet.io'>Hwaet</a>.
+I have built a website that allows you to switch between translations of Beowulf, as well as the original text. It is called <a href='https://www.hwaet.io'>Hwæt</a>. The name of the website is the first word of Beowulf in Old English. It can variously be understood as "lo!", "hark!", or "listen!".
 
 ![](bw.png)
 
