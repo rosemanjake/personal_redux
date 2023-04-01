@@ -26,8 +26,9 @@
 @media only screen and (max-width: 1200px) {
     .content, .gallerycontent {
         width:95%;
-        max-width:95%;
+        max-width:750px;
         margin:auto;
+        
     }
     .maintitle {
         font-size:var(--Huge);
@@ -49,7 +50,7 @@
     }
     .content{
         width:80%;
-        max-width:80%;
+        max-width:750px;
         padding-left:60px;
         padding-right:60px;
         padding-top:60px;
@@ -126,7 +127,7 @@
 /* Very big screen devices (1400px and above) */
 @media only screen and (min-width: 1600px){
     .content{
-        max-width:1050px;
+        max-width:750px;
     }
 }
 

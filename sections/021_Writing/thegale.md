@@ -12,8 +12,6 @@ She stood beside her car at the edge of the road and the radio was on loud. The 
 
 Claire returned to her car and set off for the burning hills. Last year the fires had been too small and she had been too late. She had reached the bush only after the heat had crushed it into charcoal and ash. The earth had been cold and all that burned there were little embers with their weak wisps of smoke. This time she would photograph the flames at their highest point. She would capture them as they made light and smoke from the bush. 
 
-![](bush2.jpg)
-
 After some time she left the fields, and the trees became thick alongside her. The hot air that came in through the open windows grew hotter still. But there in the bush she soon found the remains of an accident in the shallow ditch beside the road. A few crumpled cars had been discarded there and the asphalt was still wet where pools of blood had been hosed away.  A woman stood at the edge of the road with her car quite intact beside her. Claire saw a photograph in the scene and pulled over to capture it. She hung her camera around her neck and left the car. But as Claire approached the crash she saw that a camera also hung from the neck of this other woman.
 
 "Another photographer?’ asked the woman.

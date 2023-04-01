@@ -247,6 +247,7 @@ background: #a6a6a6;
     padding-right: 80px;
     padding-top: 100px;
     padding-bottom: 150px;
+    max-width:750px;
 }
 
 .articlefig{
@@ -562,3 +563,9 @@ strong{
 pre{
     white-space: pre-wrap;
 }
+
+.prevent-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }

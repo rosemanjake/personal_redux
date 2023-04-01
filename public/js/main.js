@@ -1,5 +1,5 @@
-const domain = 'https://jakeroseman.com/'
-//const domain = 'http://localhost:8080/'
+//const domain = 'https://jakeroseman.com/'
+const domain = 'http://localhost:8080/'
 let sectionmap
 let opencolumn = []
 let ismobile
@@ -86,7 +86,8 @@ async function fetchSections(data = {}){
 
                 // Primary row with drop down
                 let menurow = document.createElement('div')
-                menurow.className ="menurow"
+                menurow.classList.add("menurow")
+                menurow.classList.add("prevent-select")
                 menurow.addEventListener('click', routeSection)
                 menurow.id = `${section}_row`
                 menucolumn.appendChild(menurow)
@@ -95,6 +96,7 @@ async function fetchSections(data = {}){
                 let currsection = document.createElement('div')
                 currsection.innerText = section
                 currsection.className = "menubutton"
+                currsection.classList.add("prevent-select")
                 currsection.id = currsection.innerText
                 menurow.appendChild(currsection)
 
@@ -190,6 +192,8 @@ async function fetchEntries(section){
                 let currentry = document.createElement('div')
                 currentry.innerText = entry
                 currentry.className = "entrybutton"
+                currentry.classList.add("prevent-select")
+
                 currentry.addEventListener('click', fetchContent)
                 currentry.id = currentry.innerText
                 currcolumn.appendChild(currentry)
